@@ -5,9 +5,9 @@ import time
 import mysql.connector as mysql
 
 db = mysql.connect(
-    host = "localhost",
+    host = "127.0.0.1",
     user = "root",
-    passwd = "789123",
+    passwd = "claveyaposerver",
     database="yapoAutos"
 )
 
