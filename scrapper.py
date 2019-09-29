@@ -23,10 +23,7 @@ def ocr_core(filename):
         return text
 
     except Exception as e:
-        print(e)
-        time.sleep(2)
-        ocr_core(filename)
-
+        return "no se pudo obtener"                
 
 db = mysql.connect(
     host = "190.121.21.172",
