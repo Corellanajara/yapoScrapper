@@ -7,6 +7,8 @@ import time
 import mysql.connector as mysql
 from PIL import Image
 import pytesseract
+import re
+from unicodedata import normalize
 
 def ocr_core(filename):
     from PIL import Image
@@ -23,7 +25,7 @@ def ocr_core(filename):
         return text
 
     except Exception as e:
-        return "no se pudo obtener"                
+        return "no se pudo obtener"
 
 db = mysql.connect(
     host = "190.121.21.172",
@@ -106,6 +108,16 @@ while flag:
                         td = td.get_text()
                         td = td.replace("\t", "")
                         td = td.replace("\n", "")
+                        s = th
+                        s = re.sub(
+                                r"([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+", r"\1",
+                                normalize( "NFD", s), 0, re.I
+                            )
+
+                        # -> NFC
+                        th = normalize( 'NFC', s)
+                        th = th.replace(" ","")
+                        print( s )
                         datos += " , `"+str(th)+"` "
                         values += " , '"+str(td)+" ' "
                         #print(tag)
@@ -113,7 +125,7 @@ while flag:
                     pass
                     ##print("este no funciono")
                     ##print(e)
-
+            break
             #print(datos+" values ("+values+")")
             dia = anuncio.find("span",class_="date")
             dia = dia.get_text()
