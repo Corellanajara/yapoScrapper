@@ -101,7 +101,7 @@ while flag:
                             r = requests.post('http://www.unidadsistemas.cl/yapo/recepcion.php', files={file: f})
                             print(r.text)
 
-                        numero = ocr_core(file)
+                        #numero = ocr_core(file)
 
                     if(th != 'Precio'):
                         td = tag.find("td")
@@ -117,7 +117,7 @@ while flag:
                         # -> NFC
                         th = normalize( 'NFC', s)
                         th = th.replace(" ","")
-                        print( s )
+                        print( th )
                         datos += " , `"+str(th)+"` "
                         values += " , '"+str(td)+" ' "
                         #print(tag)
@@ -125,7 +125,6 @@ while flag:
                     pass
                     ##print("este no funciono")
                     ##print(e)
-            break
             #print(datos+" values ("+values+")")
             dia = anuncio.find("span",class_="date")
             dia = dia.get_text()
@@ -159,10 +158,15 @@ while flag:
             print(str(dia) + " a las " + str(hora) + " se publica : "+str(titulo)+ " en "+str(comuna)+" a "+ str(precio) )
             cursor = db.cursor()
 
-            insert = "insert into anuncio (numero,userStatus,nombreVendedor,region,Precio,hora,titulo,comuna"
-            sql = str(insert)+" "+str(datos)+" ) values ('"+str(numero)+"','"+str(isPro)+"','"+str(nombreVendedor)+"','"+str(region)+"','"+str(precio)+"','"+str(hora)+"','"+str(titulo)+"','"+str(comuna)+"' "+str(values)+" )"
+            insert = "insert into anuncio (userStatus,nombreVendedor,region,Precio,hora,titulo,comuna"
+            sql = str(insert)+" "+str(datos)+" ) values ('"+str(isPro)+"','"+str(nombreVendedor)+"','"+str(region)+"','"+str(precio)+"','"+str(hora)+"','"+str(titulo)+"','"+str(comuna)+"' "+str(values)+" )"
             #sql = "INSERT INTO customers (name, address) VALUES (%s, %s)"
             #print(sql)
-            cursor.execute(sql)
+	    try:
+                 cursor.execute(sql)
+	    except Exception as e:
+		 print(e)
+            #cursor.execute(sql)
             db.commit()
             print("\n")
+
