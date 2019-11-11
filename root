@@ -43,7 +43,7 @@ flag = True
 url = 'https://www.yapo.cl/region_metropolitana/autos'
 nPagina = 0;
 an = 0;
-fullDate = datetime.datetime.now().strftime("%Y-%m-%d  %H:%M:%S")
+fullDate = datetime.datetime.now().strftime("%d-%m-%y  %H:%M")
 month = datetime.datetime.now().strftime("%m")
 year = datetime.datetime.now().strftime("%Y")
 
@@ -55,6 +55,7 @@ while flag:
     anuncios = soup.find_all("tr", class_="ad listing_thumbs")
 
     for anuncio in anuncios:
+            cantidadRegistros = cantidadRegistros + 1
             an = an + 1
             #print(an)
             datos = ""
@@ -171,7 +172,6 @@ while flag:
                 sql = str(insert)+" "+str(datos)+" ) values ('"+fullDate+"','"+year+"','"+month+"','"+str(numero)+"','"+str(isPro)+"','"+str(nombreVendedor)+"','"+str(region)+"','"+str(precio)+"','"+str(hora)+"','"+str(titulo)+"','"+str(comuna)+"' "+str(values)+" )"
                 cursor.execute(sql)
                 db.commit()
-                cantidadRegistros = cantidadRegistros + 1
             except Exception as e:
                 print("este vehiculo (codigo) esta repetido")
             print("\n")
